@@ -1,1 +1,1 @@
-# truth-table-generator
+Truth table generator tool. Run
