@@ -300,9 +300,10 @@ def simple(exp):
 				return x[1](simple(tmp[0]),simple(tmp[1]))
 
 
-def parse(exp,stack=[None]):
+def parse(exp,stack=None):
 	"""Parse an entire expression."""
-	tree = stack.pop()
+	if stack:
+		tree = stack.pop()
 	if paren(exp) == exp:
 		if tree:
 			tmp = simple(exp)
@@ -379,10 +380,11 @@ if __name__ == '__main__':
 			if expr == "exit":
 				break
 			try:
+				e1 = parse(expr)
 				if values:
 					tmp = [(x.split('=')[0][1:],x.split('=')[1]=="True") for x in values]
 					values = dict(tmp)
-				e1 = parse(expr)
+				
 				table(e1,values)
 			except:
 				print("Bad expression.")
