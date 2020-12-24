@@ -285,7 +285,9 @@ def tmp_replace(main,tree):
 
 def simple(exp):
 	"""Parse a single operation enclosed in parentheses."""
-	if re.fullmatch(tmpre,exp):
+	if not exp or not re.search(prop,exp):
+		raise Exception
+	elif re.fullmatch(tmpre,exp):
 		return Prop("tmp")
 	elif re.fullmatch(prop,exp):
 		tmp = re.findall(r"[a-uw-zA-Z][a-uw-zA-Z_0-9]*",exp)[0]
@@ -300,10 +302,12 @@ def simple(exp):
 				return x[1](simple(tmp[0]),simple(tmp[1]))
 
 
-def parse(exp,stack=None):
+def parse(exp,stack=[]):
 	"""Parse an entire expression."""
 	if stack:
 		tree = stack.pop()
+	else:
+		tree = None
 	if paren(exp) == exp:
 		if tree:
 			tmp = simple(exp)
@@ -380,11 +384,10 @@ if __name__ == '__main__':
 			if expr == "exit":
 				break
 			try:
-				e1 = parse(expr)
 				if values:
 					tmp = [(x.split('=')[0][1:],x.split('=')[1]=="True") for x in values]
 					values = dict(tmp)
-				
+				e1 = parse(expr)	
 				table(e1,values)
 			except:
 				print("Bad expression.")
