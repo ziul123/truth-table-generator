@@ -377,5 +377,8 @@ if __name__ == '__main__':
 		if values:
 			tmp = [(x.split('=')[0][1:],x.split('=')[1]=="True") for x in values]
 			values = dict(tmp)
-		e1 = parse(expr)
-		table(e1,values)
+		try:
+			e1 = parse(expr)
+			table(e1,values)
+		except:
+			print("Bad expression.")
