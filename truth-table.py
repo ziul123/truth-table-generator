@@ -9,6 +9,7 @@ and: the symbol "^"
 or: the symbol "v"
 conditional: the symbol "->"
 biconditional: the symbol "<->"
+exit: enter "exit" to exit
 
 Usage
 -----
@@ -373,12 +374,15 @@ if __name__ == '__main__':
 		if sys.argv[1] == '-h' or sys.argv[1] == '--help':
 			print(__doc__)
 	except:
-		expr,*values = input("Please enter an expression:\n").split(',')
-		if values:
-			tmp = [(x.split('=')[0][1:],x.split('=')[1]=="True") for x in values]
-			values = dict(tmp)
-		try:
-			e1 = parse(expr)
-			table(e1,values)
-		except:
-			print("Bad expression.")
+		while True:
+			expr,*values = input(">> ").split(',')
+			if expr == "exit":
+				break
+			try:
+				if values:
+					tmp = [(x.split('=')[0][1:],x.split('=')[1]=="True") for x in values]
+					values = dict(tmp)
+				e1 = parse(expr)
+				table(e1,values)
+			except:
+				print("Bad expression.")
